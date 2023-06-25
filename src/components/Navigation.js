@@ -8,7 +8,7 @@ function Navigation() {
       <Navbar className="bg-body-tertiary">
         <Container>
           <Navbar.Brand href="#home">
-            <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top mx-3"/>
+            <img alt="" src={logo} width="40" height="40" className="d-inline-block align-top mx-3"/>
             SyZyGy ICO Crowdsale
           </Navbar.Brand>
         </Container>
