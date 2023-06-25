@@ -7,6 +7,7 @@ import Navigation from "./Navigation";
 import Info from "./Info";
 import Loading from './Loading';
 import Progress from './Progress';
+import Buy from './Buy';
 
 //Config
 import config from "../config.json";
@@ -78,7 +79,8 @@ function App() {
             ) : (
                 <>
                     <p className='text-center'><strong>Current price: </strong>{price} ETH</p>
-                    < Progress tokenSold={tokenSold} maxTokens={maxTokens} />
+                    <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} />
+                    <Progress tokenSold={tokenSold} maxTokens={maxTokens} />
                 </>
             )}
             <hr/>
