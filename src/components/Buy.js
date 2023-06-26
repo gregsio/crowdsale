@@ -34,7 +34,12 @@ const Buy = ({ provider, price, crowdsale, setIsloading }) => {
     }
 
     return(
-        <Form onSubmit={buyHandler} style={{ maxWidth: '800px', marging: '50px auto' }}>
+        <>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div className='d-grid'>
+        <Form onSubmit={buyHandler} style={{ maxWidth: '800px', marging: 'auto'}} className='mx-auto'>
             <Form.Group as={Row}>
                 <Col>
                     <Form.Control type="number" placeholder="Enter amount" onChange={(e) => setAmount(e.target.value)} />
@@ -45,10 +50,13 @@ const Buy = ({ provider, price, crowdsale, setIsloading }) => {
                     (<Spinner animation='border'></Spinner>):
                     (<Button variant="primary" type="Submit" style={{ width: '100%'}}>Buy Tokens</Button>)
                 }
-                    
                 </Col>
             </Form.Group>   
         </Form>
+        </div>
+        <br></br>
+        <br></br>
+        </>
     )
 }
 

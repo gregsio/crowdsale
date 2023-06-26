@@ -79,11 +79,11 @@ function App() {
             ) : (
                 <>
                     <p className='text-center'><strong>Current price: </strong>{price} ETH</p>
-                    <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} />
+                   <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} />
                     <Progress tokenSold={tokenSold} maxTokens={maxTokens} />
                 </>
             )}
-            <hr/>
+            <hr />
             {account && (
                 <Info account={account} accountBalance={accountBalance} />
             )}
