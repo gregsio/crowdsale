@@ -17,12 +17,18 @@ describe('Crowdsale', () => {
         accounts = await ethers.getSigners()
         deployer = accounts[0]
         user1 = accounts[1]
+        user2 = accounts[2]
 
         token = await Token.deploy('SYZYGY','CZG', 1000000)
         crowdsale = await Crowdsale.deploy(token.address, ether(1), '1000000')
 
         let transaction = await token.connect(deployer).transfer(crowdsale.address, tokens(1000000))
         await transaction.wait()
+
+        transaction = await crowdsale.connect(deployer).whitelistAdd(user1.address)
+        result = await transaction.wait()
+
+
     })
 
     describe('Deployment', () => {
@@ -48,6 +54,10 @@ describe('Crowdsale', () => {
                 transaction = await crowdsale.connect(user1).buyTokens(amount, { value: ether(10)})
                 result = await transaction.wait()
             })
+            it('adds user to whitelist', async() =>{
+                expect(await crowdsale.whitelist(user1.address)).to.equal(true)
+            })
+
             it('transfers tokens', async () => {
                 expect( await token.balanceOf(user1.address)).to.equal(amount)
                 expect( await token.balanceOf(crowdsale.address)).to.equal(tokens(999990))
@@ -67,6 +77,9 @@ describe('Crowdsale', () => {
         describe('Failure', () => {
             it('rejects buying tokens with insufficient ETH', async () => {
                 await expect(crowdsale.connect(user1).buyTokens(tokens(10),{value: ether(0)})).to.be.reverted
+            })
+            it('rejects non-whitelisted users from buying tokens', async () => {
+                await expect(crowdsale.connect(user2).buyTokens(tokens(10),{value: ether(10)})).to.be.revertedWith('Account is not whitelisted')
             })
         })
     })
