@@ -36,13 +36,13 @@ import React, { useEffect, useState } from "react";
       <span>
         <strong>
         {timeLeft[interval]} {interval}{" "}
-        </strong> 
+        </strong>
       </span>
     );
   });
   return (
     <div className="text-center">
-      {timerComponents.length ? <p> Welcome to CZJ token crowdsale, <br/> This ICO ends in {timerComponents}! <br/>Hurry up! </p> : <span>Time's up! The Crowdsale has ended {calculateTimeLeft}</span>}
+      {timerComponents.length ? <p>This ICO ends in {timerComponents}! <br/>Hurry up! </p> : <span>Time's up! The Crowdsale has ended. {calculateTimeLeft}</span>}
     </div>
   );
 }

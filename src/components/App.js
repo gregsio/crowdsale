@@ -31,6 +31,8 @@ function App() {
     const [whitelisted, setWhitelisted] = useState(0)
     const [crowdsaleClosingDate, setCrowdsaleClosingDate] = useState(0)
     const [isLoading, setIsloading] = useState(true)
+    const [timeLeft, setTimeLeft] = useState(0);
+
 
     const loadBlockchainData = async () => {
         //Initiate provider
@@ -68,6 +70,8 @@ function App() {
         const crowdsaleClosingDate = await crowdsale.crowdsaleClosingDate()
         setCrowdsaleClosingDate(crowdsaleClosingDate.toNumber())
 
+        const timeLeft = +crowdsaleClosingDate*1000 - +new Date();
+        setTimeLeft(timeLeft)
 
         setIsloading(false)
 
@@ -81,7 +85,7 @@ function App() {
         <Container>
             <Navigation/>
             <>
-            <h1 className='my-4 text-center'>Introducing CZJ Token!</h1>
+            <h2 className='my-4 text-center'>Welcome to the CZG token crowdsale<br/></h2>
             {crowdsaleClosingDate && (
             <Countdown expireTimestamp={crowdsaleClosingDate}/>
             )}
@@ -89,13 +93,15 @@ function App() {
             {isLoading ? (
                 <Loading/>
             ) : (
-                <>
+                timeLeft > 0 ? (
+                    <>
                     <p className='text-center'><strong>Current price: </strong>{price} ETH</p>
                    <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} whitelisted={whitelisted}/>
-                    <Progress tokenSold={tokenSold} maxTokens={maxTokens} />
-                </>
+                   <Progress tokenSold={tokenSold} maxTokens={maxTokens} />
+                   </>
+                ) : (<br/>)
             )}
-            <hr />
+            <hr/>
             {account && (
                 <Info account={account} accountBalance={accountBalance} whitelisted={whitelisted}/>
             )}
