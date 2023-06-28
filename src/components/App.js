@@ -15,6 +15,7 @@ import config from "../config.json";
 //ABIs
 import TOKEN_ABI from '../abis/Token.json';
 import CROWDSALE_ABI from '../abis/Crowdsale.json';
+import Countdown from './Countdown';
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
     const [tokenSold, setTokenSold] = useState(0)
     const [maxTokens, setMaxTokens] = useState(0)
     const [whitelisted, setWhitelisted] = useState(0)
-
+    const [crowdsaleClosingDate, setCrowdsaleClosingDate] = useState(0)
     const [isLoading, setIsloading] = useState(true)
 
     const loadBlockchainData = async () => {
@@ -64,6 +65,10 @@ function App() {
         const whitelisted = await crowdsale.whitelist(account)
         setWhitelisted(whitelisted)
 
+        const crowdsaleClosingDate = await crowdsale.crowdsaleClosingDate()
+        setCrowdsaleClosingDate(crowdsaleClosingDate.toNumber())
+
+
         setIsloading(false)
 
     }
@@ -75,8 +80,12 @@ function App() {
     return(
         <Container>
             <Navigation/>
+            <>
             <h1 className='my-4 text-center'>Introducing CZJ Token!</h1>
-
+            {crowdsaleClosingDate && (
+            <Countdown expireTimestamp={crowdsaleClosingDate}/>
+            )}
+            </>
             {isLoading ? (
                 <Loading/>
             ) : (
