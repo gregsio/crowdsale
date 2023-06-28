@@ -37,5 +37,3 @@ task(
 
   }
 );
-
-module.exports = {};
