@@ -9,6 +9,7 @@ contract Crowdsale {
     uint256 public price;
     uint256 public maxTokens;
     uint256 public tokenSold;
+    uint256 public crowdsaleClosingDate;
 
     mapping(address => bool) public whitelist;
 
@@ -20,11 +21,17 @@ contract Crowdsale {
         token = _token;
         price = _price;
         maxTokens = _maxTokens;
+        crowdsaleClosingDate = block.timestamp;
      //   whitelist[msg.sender] = true;
     }
 
-    modifier onlyOnwer(){
+    modifier onlyOwner(){
         require(msg.sender == owner, 'Caller is not the owner');
+        _;
+    }
+
+    modifier crowdsaleOpen(){
+        require(block.timestamp < crowdsaleClosingDate, 'Crowdsale is closed');
         _;
     }
 
@@ -33,13 +40,17 @@ contract Crowdsale {
          buyTokens(amount * 1e18);
     }
 
-    function whitelistAdd(address[] memory _addresslist) public onlyOnwer {
+    function crowndsaleClosingDate(uint256 _timestamp) public onlyOwner {
+        crowdsaleClosingDate = _timestamp;
+    }
+
+    function whitelistAdd(address[] memory _addresslist) public onlyOwner {
         for ( uint i = 0; i < _addresslist.length; i++) {
             whitelist[_addresslist[i]] = true;
         }
     }
 
-    function buyTokens(uint256 _amount) public payable{
+    function buyTokens(uint256 _amount) public payable crowdsaleOpen{
         require(whitelist[msg.sender], 'Account is not whitelisted');
         require(msg.value == (_amount/1e18) * price);
         require(token.balanceOf(address(this)) >= _amount);
@@ -49,11 +60,11 @@ contract Crowdsale {
         emit Buy(_amount, msg.sender);
     }
 
-    function setPrice(uint256 _price) public onlyOnwer {
+    function setPrice(uint256 _price) public onlyOwner {
         price = _price;
     }
 
-    function finalize() public onlyOnwer {
+    function finalize() public onlyOwner {
         require(token.transfer(owner, token.balanceOf(address(this))));        
         uint256 value = address(this).balance;
         (bool sent, ) = owner.call{value: value }("");

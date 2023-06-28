@@ -25,6 +25,10 @@ describe('Crowdsale', () => {
         let transaction = await token.connect(deployer).transfer(crowdsale.address, tokens(1000000))
         await transaction.wait()
 
+        const dateInSecs = (Math.floor(new Date().getTime() / 1000) + 3600); // current date seconds + 1 hour
+        transaction = await crowdsale.connect(deployer).crowndsaleClosingDate(dateInSecs)  // opens crowdsale for an hour
+        result = await transaction.wait()
+
         transaction = await crowdsale.connect(deployer).whitelistAdd([user1.address])
         result = await transaction.wait()
 
@@ -57,7 +61,6 @@ describe('Crowdsale', () => {
             it('adds user to whitelist', async() =>{
                 expect(await crowdsale.whitelist(user1.address)).to.equal(true)
             })
-
             it('transfers tokens', async () => {
                 expect( await token.balanceOf(user1.address)).to.equal(amount)
                 expect( await token.balanceOf(crowdsale.address)).to.equal(tokens(999990))
@@ -80,6 +83,14 @@ describe('Crowdsale', () => {
             })
             it('rejects non-whitelisted users from buying tokens', async () => {
                 await expect(crowdsale.connect(user2).buyTokens(tokens(10),{value: ether(10)})).to.be.revertedWith('Account is not whitelisted')
+            })
+            it('rejects users from buying token when crowsale is closed', async () => {
+                const dateInSecs = (Math.floor(new Date().getTime() / 1000) - 3600); // current date seconds - 1 hour
+                transaction = await crowdsale.connect(deployer).crowndsaleClosingDate(dateInSecs)  // closes the crowdsale an hour
+                result = await transaction.wait()
+
+                await expect(crowdsale.connect(user1).buyTokens(tokens(10),{value: ether(10)})).to.be.revertedWith('Crowdsale is closed')
+
             })
         })
     })
