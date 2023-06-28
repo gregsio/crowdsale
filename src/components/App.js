@@ -27,7 +27,7 @@ function App() {
     const [price, setPrice] = useState(0)
     const [tokenSold, setTokenSold] = useState(0)
     const [maxTokens, setMaxTokens] = useState(0)
-
+    const [whitelisted, setWhitelisted] = useState(0)
 
     const [isLoading, setIsloading] = useState(true)
 
@@ -61,6 +61,9 @@ function App() {
         const maxTokens = ethers.utils.formatUnits(await crowdsale.maxTokens(), 18)
         setMaxTokens(maxTokens)
 
+        const whitelisted = await crowdsale.whitelist(account)
+        setWhitelisted(whitelisted)
+
         setIsloading(false)
 
     }
@@ -79,13 +82,13 @@ function App() {
             ) : (
                 <>
                     <p className='text-center'><strong>Current price: </strong>{price} ETH</p>
-                   <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} />
+                   <Buy provider={provider} price={price} crowdsale={crowdsale} setIsloading={setIsloading} whitelisted={whitelisted}/>
                     <Progress tokenSold={tokenSold} maxTokens={maxTokens} />
                 </>
             )}
             <hr />
             {account && (
-                <Info account={account} accountBalance={accountBalance} />
+                <Info account={account} accountBalance={accountBalance} whitelisted={whitelisted}/>
             )}
         </Container>
     )

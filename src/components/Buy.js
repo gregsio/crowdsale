@@ -7,10 +7,7 @@ import { useState } from 'react'
 import { ethers } from 'ethers'
 
 
-
-
-
-const Buy = ({ provider, price, crowdsale, setIsloading }) => {
+const Buy = ({ provider, price, crowdsale, setIsloading, whitelisted }) => {
 
     const [amount, setAmount] = useState('0')
     const [isWaiting, setIsWaiting] = useState(false)
@@ -39,20 +36,27 @@ const Buy = ({ provider, price, crowdsale, setIsloading }) => {
         <br></br>
         <br></br>
         <div className='d-grid'>
-        <Form onSubmit={buyHandler} style={{ maxWidth: '800px', marging: 'auto'}} className='mx-auto'>
-            <Form.Group as={Row}>
-                <Col>
-                    <Form.Control type="number" placeholder="Enter amount" onChange={(e) => setAmount(e.target.value)} />
-                </Col>
-                <Col className='text-center'>
-                    {
-                    isWaiting ? 
-                    (<Spinner animation='border'></Spinner>):
-                    (<Button variant="primary" type="Submit" style={{ width: '100%'}}>Buy Tokens</Button>)
-                }
-                </Col>
-            </Form.Group>   
-        </Form>
+
+        {!whitelisted && (
+                <p className='text-center'>Your wallet adddress is curently not allowed to participate in the crowdsale!{whitelisted}</p>
+                )
+            }
+        {whitelisted && (
+            <Form onSubmit={buyHandler} style={{ maxWidth: '800px', marging: 'auto'}} className='mx-auto'>
+                <Form.Group as={Row}>
+                    <Col>
+                        <Form.Control type="number" placeholder="Enter amount" onChange={(e) => setAmount(e.target.value)} />
+                    </Col>
+                    <Col className='text-center'>
+                        {
+                        isWaiting ?
+                        (<Spinner animation='border'></Spinner>):
+                        (<Button variant="primary" type="Submit" style={{ width: '100%'}}>Buy Tokens</Button>)
+                    }
+                    </Col>
+                </Form.Group>
+            </Form>
+        )}
         </div>
         <br></br>
         <br></br>
