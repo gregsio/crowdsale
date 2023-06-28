@@ -25,7 +25,7 @@ describe('Crowdsale', () => {
         let transaction = await token.connect(deployer).transfer(crowdsale.address, tokens(1000000))
         await transaction.wait()
 
-        transaction = await crowdsale.connect(deployer).whitelistAdd(user1.address)
+        transaction = await crowdsale.connect(deployer).whitelistAdd([user1.address])
         result = await transaction.wait()
 
 

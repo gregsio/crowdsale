@@ -178,9 +178,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "_addresslist",
+        "type": "address[]"
       }
     ],
     "name": "whitelistAdd",

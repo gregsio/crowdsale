@@ -33,8 +33,10 @@ contract Crowdsale {
          buyTokens(amount * 1e18);
     }
 
-    function whitelistAdd(address _address) public onlyOnwer {
-        whitelist[_address] = true;
+    function whitelistAdd(address[] memory _addresslist) public onlyOnwer {
+        for ( uint i = 0; i < _addresslist.length; i++) {
+            whitelist[_addresslist[i]] = true;
+        }
     }
 
     function buyTokens(uint256 _amount) public payable{
