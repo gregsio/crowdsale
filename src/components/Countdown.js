@@ -33,7 +33,7 @@ import React, { useEffect, useState } from "react";
     }
 
     timerComponents.push(
-      <span>
+      <span key={interval}>
         <strong>
         {timeLeft[interval]} {interval}{" "}
         </strong>
@@ -41,9 +41,9 @@ import React, { useEffect, useState } from "react";
     );
   });
   return (
-    <div className="text-center">
-      {timerComponents.length ? <p>This ICO ends in {timerComponents}! <br/>Hurry up! </p> : <span>Time's up! The Crowdsale has ended. {calculateTimeLeft}</span>}
-    </div>
+        <div className="text-center">
+        {timerComponents.length ? <p>This ICO ends in {timerComponents}! <br/>Hurry up! </p> : <span>Time's up! The Crowdsale has ended.</span>}
+        </div>
   );
 }
 

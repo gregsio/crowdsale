@@ -29,7 +29,7 @@ function App() {
     const [tokenSold, setTokenSold] = useState(0)
     const [maxTokens, setMaxTokens] = useState(0)
     const [whitelisted, setWhitelisted] = useState(0)
-    const [crowdsaleClosingDate, setCrowdsaleClosingDate] = useState(0)
+    const [crowdsaleClosingDate, setCrowdsaleClosingDate] = useState()
     const [isLoading, setIsloading] = useState(true)
     const [timeLeft, setTimeLeft] = useState(0);
 
